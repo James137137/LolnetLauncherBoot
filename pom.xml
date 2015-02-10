@@ -3,7 +3,7 @@
   <groupId>io.github.oxguy3</groupId>
   <artifactId>LolnetLauncherBoot</artifactId>
   <version>1.0.3</version>
-  <name>CraftBoot</name>
+  <name>LolnetLauncherBoot</name>
   <description>An open bootstrapper for a Minecraft modpack launcher, built on SKCraft Launcher</description>
   <build>
     <sourceDirectory>src</sourceDirectory>

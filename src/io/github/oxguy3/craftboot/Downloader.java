@@ -1,6 +1,5 @@
 package io.github.oxguy3.craftboot;
 
-
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.io.*;
@@ -11,10 +10,7 @@ import javax.swing.JProgressBar;
 
 public class Downloader extends JFrame {
 
-    public static final void main(String[] args) throws Exception {
-        
-    }
-
+   
     static boolean download(String downloadUrl, File launcherJar) {
         String site = downloadUrl;
         String filename = launcherJar.getAbsolutePath();
@@ -27,7 +23,7 @@ public class Downloader extends JFrame {
         frm.setVisible(true);
         frm.setLayout(new FlowLayout());
         frm.setSize(200, 100);
-        
+
         frm.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width / 2 - frm.getSize().width / 2 - 50, Toolkit.getDefaultToolkit().getScreenSize().height / 2 - frm.getSize().height / 2);
         frm.setDefaultCloseOperation(EXIT_ON_CLOSE);
         try {
@@ -54,6 +50,6 @@ public class Downloader extends JFrame {
             javax.swing.JOptionPane.showConfirmDialog((java.awt.Component) null, e.getMessage(), "Error", javax.swing.JOptionPane.DEFAULT_OPTION);
             return false;
         }
-        
+
     }
 }

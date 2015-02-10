@@ -18,10 +18,6 @@
 package io.github.oxguy3.craftboot;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -30,15 +26,12 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
 
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import lombok.Getter;
 import lombok.extern.java.Log;
 
 @Log
-public class Craftboot {
+public class LolnetLauncherboot {
 
     @Getter
     private static File dataDir;
@@ -73,7 +66,6 @@ public class Craftboot {
         dataDir = new File(dataLocation);
         File launcherDir = new File(dataDir, "launcher");
         launcherDir.mkdir();
-        System.out.println(launcherDir.getAbsolutePath());
 
         File[] launcherPacks = launcherDir.listFiles();
         if (launcherPacks == null || launcherPacks.length == 0) {
@@ -156,10 +148,7 @@ public class Craftboot {
         Class<?> launcherClass = loader.loadClass(LAUNCHER_CLASS_NAME);
         Method launcherMethod = launcherClass.getDeclaredMethod("main", Class.forName("[Ljava.lang.String;"));
 
-        String[] args = {
-            "--dir", dataDir.getAbsolutePath(),
-            "--bootstrap-version", "1"
-        };
+        String[] args = {};
 
         launcherMethod.invoke(null, new Object[]{args});
     }

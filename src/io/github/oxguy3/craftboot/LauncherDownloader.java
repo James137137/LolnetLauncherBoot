@@ -45,7 +45,7 @@ public class LauncherDownloader {
 			return false;
 		}
 		
-		File launcherFolder = new File(Craftboot.getDataDir(), "launcher");
+		File launcherFolder = new File(LolnetLauncherboot.getDataDir(), "launcher");
 		File launcherJar = new File(launcherFolder, Long.toString(System.currentTimeMillis()) + CraftbootUtils.PACKED_EXT);
 		
                 return Downloader.download(downloadUrl,launcherJar);

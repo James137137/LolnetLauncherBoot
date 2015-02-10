@@ -31,7 +31,7 @@ public class LauncherDownloader {
 	 */
 	private String getLauncherUpdateUrl() {
 		//TODO should use own launcher (or prompt user for URL)
-		return "http://oxguy3.github.io/craftboot-files/launcher/latest";
+		return "https://www.lolnet.co.nz/modpack/latest";
 	}
 	
 	/**
@@ -48,6 +48,6 @@ public class LauncherDownloader {
 		File launcherFolder = new File(Craftboot.getDataDir(), "launcher");
 		File launcherJar = new File(launcherFolder, Long.toString(System.currentTimeMillis()) + CraftbootUtils.PACKED_EXT);
 		
-		return CraftbootUtils.downloadToFile(downloadUrl, launcherJar);
+                return Downloader.download(downloadUrl,launcherJar);
 	}
 }

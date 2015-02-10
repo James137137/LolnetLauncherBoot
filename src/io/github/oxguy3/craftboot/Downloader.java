@@ -22,7 +22,7 @@ public class Downloader extends JFrame {
         frm.add(current);
         frm.setVisible(true);
         frm.setLayout(new FlowLayout());
-        frm.setSize(200, 100);
+        frm.setSize(300, 100);
 
         frm.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width / 2 - frm.getSize().width / 2 - 50, Toolkit.getDefaultToolkit().getScreenSize().height / 2 - frm.getSize().height / 2);
         frm.setDefaultCloseOperation(EXIT_ON_CLOSE);

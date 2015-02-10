@@ -21,9 +21,12 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 
 import lombok.Getter;
@@ -56,12 +59,22 @@ public class LolnetLauncherboot {
      * @param args arguments (not used)
      */
     public static void main(String[] args) {
+        File launcher = null;
+        try {
+            launcher = new File(LolnetLauncherboot.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(LolnetLauncherboot.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Preferences userNodeForPackage = java.util.prefs.Preferences.userRoot();
         userNodeForPackage.put("LolnetLauncherbootstrap", "true");
+        if (launcher != null) {
+            userNodeForPackage.put("LolnetLauncherbootstrapLocation", launcher.getAbsolutePath());
+        }
+
         System.out.println(userNodeForPackage.get("LolnetLauncherbootstrap", ""));
         String dataLocation = userNodeForPackage.get("LolnetLauncherDataPath", "");
         String getSnapshotVersion = userNodeForPackage.get("DownloadSnapShot", "");
-        
+
         if (dataLocation == null || dataLocation.length() == 0 || !(new File(dataLocation).exists())) {
             dataLocation = defaultDirectory() + File.separator + "LolnetData/";
         }
@@ -77,9 +90,7 @@ public class LolnetLauncherboot {
                 System.exit(1);
             }
             launcherPacks = launcherDir.listFiles();
-        }
-        else if (getSnapshotVersion != null && getSnapshotVersion.equals("true"))
-        {
+        } else if (getSnapshotVersion != null && getSnapshotVersion.equals("true")) {
             userNodeForPackage.put("DownloadSnapShot", "");
             boolean didDownload = new LauncherDownloader().downloadLauncher(true);
             if (!didDownload) {
@@ -88,8 +99,7 @@ public class LolnetLauncherboot {
             }
             launcherPacks = launcherDir.listFiles();
         }
-        
-        
+
         ArrayList<LauncherJar> launcherPackFiles = new ArrayList<LauncherJar>(launcherPacks.length);
 
         for (int i = 0; i < launcherPacks.length; i++) {

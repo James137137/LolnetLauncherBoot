@@ -60,12 +60,17 @@ public class LolnetLauncherboot {
      */
     public static void main(String[] args) {
         File launcher = null;
+        boolean downloadLatest = false;
         try {
             launcher = new File(LolnetLauncherboot.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
         } catch (URISyntaxException ex) {
             Logger.getLogger(LolnetLauncherboot.class.getName()).log(Level.SEVERE, null, ex);
         }
         Preferences userNodeForPackage = java.util.prefs.Preferences.userRoot();
+
+        if (userNodeForPackage.get("LolnetLauncherbootstrap", "") == null || !userNodeForPackage.get("LolnetLauncherbootstrap", "").equals("true")) {
+            downloadLatest = true;
+        }
         userNodeForPackage.put("LolnetLauncherbootstrap", "true");
         if (launcher != null) {
             userNodeForPackage.put("LolnetLauncherbootstrapLocation", launcher.getAbsolutePath());
@@ -83,7 +88,7 @@ public class LolnetLauncherboot {
         launcherDir.mkdir();
 
         File[] launcherPacks = launcherDir.listFiles();
-        if (launcherPacks == null || launcherPacks.length == 0) {
+        if (launcherPacks == null || launcherPacks.length == 0 || downloadLatest) {
             boolean didDownload = new LauncherDownloader().downloadLauncher(false);
             if (!didDownload) {
                 log.severe("Failed to download launcher! Shutting down...");

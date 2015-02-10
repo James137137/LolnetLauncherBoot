@@ -26,7 +26,6 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
 
-
 import lombok.Getter;
 import lombok.extern.java.Log;
 
@@ -59,7 +58,6 @@ public class LolnetLauncherboot {
     public static void main(String[] args) {
         Preferences userNodeForPackage = java.util.prefs.Preferences.userRoot();
         String dataLocation = userNodeForPackage.get("LolnetLauncherDataPath", "");
-        System.out.println(dataLocation);
         if (dataLocation == null || dataLocation.length() == 0 || !(new File(dataLocation).exists())) {
             dataLocation = defaultDirectory() + File.separator + "LolnetData/";
         }
@@ -105,7 +103,10 @@ public class LolnetLauncherboot {
         }
 
         if (newestPackFile.isPacked()) {
-            boolean didUnpack = newestPackFile.unpackJar();
+            boolean didUnpack = false;
+
+            didUnpack = newestPackFile.unpackJar();
+
             if (!didUnpack) {
                 log.severe("Failed to unpack jar file! Shutting down...");
                 System.exit(1);
@@ -145,11 +146,18 @@ public class LolnetLauncherboot {
         }
 
         ClassLoader loader = URLClassLoader.newInstance(jarUrls);
-        Class<?> launcherClass = loader.loadClass(LAUNCHER_CLASS_NAME);
-        Method launcherMethod = launcherClass.getDeclaredMethod("main", Class.forName("[Ljava.lang.String;"));
+        try {
+            Class<?> launcherClass = loader.loadClass(LAUNCHER_CLASS_NAME);
+            Method launcherMethod = launcherClass.getDeclaredMethod("main", Class.forName("[Ljava.lang.String;"));
 
-        String[] args = {};
+            String[] args = {};
 
-        launcherMethod.invoke(null, new Object[]{args});
+            launcherMethod.invoke(null, new Object[]{args});
+        } catch (Exception e) {
+            jar.getFile().deleteOnExit();
+            String replaceAll = jar.getFile().getAbsolutePath().replaceAll(".jar", ".jar.pack");
+            new File(replaceAll).deleteOnExit();
+        }
+
     }
 }

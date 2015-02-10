@@ -57,6 +57,8 @@ public class LolnetLauncherboot {
      */
     public static void main(String[] args) {
         Preferences userNodeForPackage = java.util.prefs.Preferences.userRoot();
+        userNodeForPackage.put("LolnetLauncherbootstrap", "true");
+        System.out.println(userNodeForPackage.get("LolnetLauncherbootstrap", ""));
         String dataLocation = userNodeForPackage.get("LolnetLauncherDataPath", "");
         String getSnapshotVersion = userNodeForPackage.get("DownloadSnapShot", "");
         

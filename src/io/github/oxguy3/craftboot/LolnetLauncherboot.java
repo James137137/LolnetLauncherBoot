@@ -68,10 +68,11 @@ public class LolnetLauncherboot {
         }
         Preferences userNodeForPackage = java.util.prefs.Preferences.userRoot();
 
-        if (userNodeForPackage.get("LolnetLauncherbootstrap", "") == null || !userNodeForPackage.get("LolnetLauncherbootstrap", "").equals("true")) {
+        if (userNodeForPackage.get("LolnetLauncherbootstrapInstalled", "") == null || !userNodeForPackage.get("LolnetLauncherbootstrapInstalled", "").equals("true")) {
             downloadLatest = true;
         }
         userNodeForPackage.put("LolnetLauncherbootstrap", "true");
+        userNodeForPackage.put("LolnetLauncherbootstrapInstalled", "true");
         if (launcher != null) {
             userNodeForPackage.put("LolnetLauncherbootstrapLocation", launcher.getAbsolutePath());
         }

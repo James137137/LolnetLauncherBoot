@@ -33,14 +33,27 @@ public class LauncherDownloader {
 		//TODO should use own launcher (or prompt user for URL)
 		return "https://www.lolnet.co.nz/modpack/latest";
 	}
+        
+        private String getLauncherSnapshotUrl() {
+		return "https://www.lolnet.co.nz/modpack/snapshot";
+	}
 	
 	/**
 	 * Downloads the launcher to the appropriate directory
 	 * 
 	 * @return true if successful
 	 */
-	public boolean downloadLauncher() {
-		String downloadUrl = CraftbootUtils.downloadTextFromUrl(getLauncherUpdateUrl());
+	public boolean downloadLauncher(boolean snapShot) {
+            String downloadUrl;
+            if (snapShot)
+            {
+                downloadUrl = CraftbootUtils.downloadTextFromUrl(getLauncherSnapshotUrl());
+            }
+            else
+            {
+                downloadUrl = CraftbootUtils.downloadTextFromUrl(getLauncherUpdateUrl());
+            }
+		
 		if (downloadUrl == null) {
 			return false;
 		}

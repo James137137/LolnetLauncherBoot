@@ -58,6 +58,8 @@ public class LolnetLauncherboot {
     public static void main(String[] args) {
         Preferences userNodeForPackage = java.util.prefs.Preferences.userRoot();
         String dataLocation = userNodeForPackage.get("LolnetLauncherDataPath", "");
+        String getSnapshotVersion = userNodeForPackage.get("DownloadSnapShot", "");
+        
         if (dataLocation == null || dataLocation.length() == 0 || !(new File(dataLocation).exists())) {
             dataLocation = defaultDirectory() + File.separator + "LolnetData/";
         }
@@ -67,13 +69,25 @@ public class LolnetLauncherboot {
 
         File[] launcherPacks = launcherDir.listFiles();
         if (launcherPacks == null || launcherPacks.length == 0) {
-            boolean didDownload = new LauncherDownloader().downloadLauncher();
+            boolean didDownload = new LauncherDownloader().downloadLauncher(false);
             if (!didDownload) {
                 log.severe("Failed to download launcher! Shutting down...");
                 System.exit(1);
             }
             launcherPacks = launcherDir.listFiles();
         }
+        else if (getSnapshotVersion != null && getSnapshotVersion.equals("true"))
+        {
+            userNodeForPackage.put("DownloadSnapShot", "");
+            boolean didDownload = new LauncherDownloader().downloadLauncher(true);
+            if (!didDownload) {
+                log.severe("Failed to download launcher! Shutting down...");
+                System.exit(1);
+            }
+            launcherPacks = launcherDir.listFiles();
+        }
+        
+        
         ArrayList<LauncherJar> launcherPackFiles = new ArrayList<LauncherJar>(launcherPacks.length);
 
         for (int i = 0; i < launcherPacks.length; i++) {

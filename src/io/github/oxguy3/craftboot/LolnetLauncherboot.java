@@ -39,6 +39,7 @@ public class LolnetLauncherboot {
     private static File dataDir;
 
     static final String LAUNCHER_CLASS_NAME = "com.skcraft.launcher.Launcher";
+    public static final String ForceUpdateCheck = "LolnetLauncherbootstrapInstalled-1.0.1";
 
     private static String defaultDirectory() {
         String OS = System.getProperty("os.name").toUpperCase();
@@ -68,11 +69,11 @@ public class LolnetLauncherboot {
         }
         Preferences userNodeForPackage = java.util.prefs.Preferences.userRoot();
 
-        if (userNodeForPackage.get("LolnetLauncherbootstrapInstalled", "") == null || !userNodeForPackage.get("LolnetLauncherbootstrapInstalled", "").equals("true")) {
+        if (userNodeForPackage.get(ForceUpdateCheck, "") == null || !userNodeForPackage.get(ForceUpdateCheck, "").equals("true")) {
             downloadLatest = true;
         }
         userNodeForPackage.put("LolnetLauncherbootstrap", "true");
-        userNodeForPackage.put("LolnetLauncherbootstrapInstalled", "true");
+        userNodeForPackage.put(ForceUpdateCheck, "true");
         if (launcher != null) {
             userNodeForPackage.put("LolnetLauncherbootstrapLocation", launcher.getAbsolutePath());
         }

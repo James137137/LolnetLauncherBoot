@@ -19,6 +19,7 @@
 package io.github.oxguy3.craftboot;
 
 import java.io.File;
+import java.net.URL;
 
 public class LauncherDownloader {
 	
@@ -62,5 +63,15 @@ public class LauncherDownloader {
 		File launcherJar = new File(launcherFolder, Long.toString(System.currentTimeMillis()) + CraftbootUtils.UNPACKED_EXT);
                 
                 return Downloader.download(downloadUrl,launcherJar);
+	}
+        
+        public boolean downloadLauncher(URL url) {
+		if (url == null) {
+			return false;
+		}
+		File launcherFolder = new File(LolnetLauncherboot.getDataDir(), "launcher");
+		File launcherJar = new File(launcherFolder, Long.toString(System.currentTimeMillis()) + CraftbootUtils.UNPACKED_EXT);
+                
+                return Downloader.download(url.toString(),launcherJar);
 	}
 }

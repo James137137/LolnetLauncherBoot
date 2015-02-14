@@ -84,9 +84,13 @@ public class LolnetLauncherboot {
         if (dataLocation == null || dataLocation.length() == 0 || !(new File(dataLocation).exists())) {
             dataLocation = defaultDirectory() + File.separator + "LolnetData/";
         }
+
         dataDir = new File(dataLocation);
         File launcherDir = new File(dataDir, "launcher");
-        launcherDir.mkdir();
+        if (!dataDir.exists() || !launcherDir.exists()) {
+            dataDir.mkdirs();
+            launcherDir.mkdir();
+        }
 
         File[] launcherPacks = launcherDir.listFiles();
         if (launcherPacks == null || launcherPacks.length == 0 || downloadLatest) {

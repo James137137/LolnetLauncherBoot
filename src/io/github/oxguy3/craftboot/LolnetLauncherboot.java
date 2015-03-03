@@ -55,11 +55,7 @@ public class LolnetLauncherboot {
         return System.getProperty("user.dir");
     }
 
-    /**
-     * Does most of the everything
-     *
-     * @param args arguments (not used)
-     */
+    
     public static void main(String[] args) {
         String property = System.getProperty("java.version");
         if (property.startsWith("1.5") || property.startsWith("1.6") || property.startsWith("1.7")) {

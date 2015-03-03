@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
+import javax.swing.JOptionPane;
 
 import lombok.Getter;
 import lombok.extern.java.Log;
@@ -60,6 +61,13 @@ public class LolnetLauncherboot {
      * @param args arguments (not used)
      */
     public static void main(String[] args) {
+        String property = System.getProperty("java.version");
+        if (property.startsWith("1.5") || property.startsWith("1.6") || property.startsWith("1.7")) {
+
+            JOptionPane.showMessageDialog(null, "LolnetLauncher requires java 8 or above", "Please update Java", JOptionPane.WARNING_MESSAGE);
+            System.exit(0);
+            return;
+        }
         File launcher = null;
         boolean downloadLatest = false;
         try {
@@ -68,7 +76,7 @@ public class LolnetLauncherboot {
             Logger.getLogger(LolnetLauncherboot.class.getName()).log(Level.SEVERE, null, ex);
         }
         Preferences userNodeForPackage = java.util.prefs.Preferences.userRoot();
-
+        userNodeForPackage.put("LolnetLauncherBootFUC", ForceUpdateCheck);
         if (userNodeForPackage.get(ForceUpdateCheck, "") == null || !userNodeForPackage.get(ForceUpdateCheck, "").equals("true")) {
             downloadLatest = true;
         }

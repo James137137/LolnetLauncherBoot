@@ -5,12 +5,26 @@ import java.awt.Toolkit;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
 public class Downloader extends JFrame {
 
    
+    public static URL checkURL(URL url) {
+        try {
+            HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+            if (huc.getResponseCode() == 404) {
+                url = new URL(url.toString().replace("https://www.lolnet.co.nz", "http://anderson.lolnet.co.nz:8082"));
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Downloader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return url;
+    }
+    
     static boolean download(String downloadUrl, File launcherJar) {
         String site = downloadUrl;
         String filename = launcherJar.getAbsolutePath();
@@ -28,6 +42,7 @@ public class Downloader extends JFrame {
         frm.setDefaultCloseOperation(EXIT_ON_CLOSE);
         try {
             URL url = new URL(site);
+            url = checkURL(url);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             int filesize = connection.getContentLength();
             float totalDataRead = 0;

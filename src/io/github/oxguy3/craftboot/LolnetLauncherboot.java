@@ -62,9 +62,7 @@ public class LolnetLauncherboot {
         String property = System.getProperty("java.version");
         if (property.startsWith("1.5") || property.startsWith("1.6") || property.startsWith("1.7")) {
 
-            JOptionPane.showMessageDialog(null, "LolnetLauncher requires java 8 or above", "Please update Java", JOptionPane.WARNING_MESSAGE);
-            System.exit(0);
-            return;
+            JOptionPane.showMessageDialog(null, "LolnetLauncher requires java 8 or above for all features.", "Please update Java", JOptionPane.WARNING_MESSAGE);
         }
         File launcher = null;
         boolean downloadLatest = false;

@@ -42,7 +42,7 @@ public class LolnetLauncherboot {
     private static File dataDir;
 
     static final String LAUNCHER_CLASS_NAME = "com.skcraft.launcher.Launcher";
-    public static final String ForceUpdateCheck = "LolnetLauncherbootstrapInstalled-1.0.1";
+    public static final String ForceUpdateCheck = "LolnetLauncherbootstrapInstalled-1.0.2";
 
     private static String defaultDirectory() {
         String OS = System.getProperty("os.name").toUpperCase();

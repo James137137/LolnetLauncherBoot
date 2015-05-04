@@ -76,6 +76,8 @@
                             <icon>${basedir}/resources/com/skcraft/launcher/icon.ico</icon>
                             <jre>
                                 <minVersion>1.7.0</minVersion>
+                                <initialHeapSize>50</initialHeapSize>
+                                <maxHeapSize>200</maxHeapSize>
                             </jre>
                             <splash>
                                 <file>${basedir}/resources/com/skcraft/launcher/splash.bmp</file>

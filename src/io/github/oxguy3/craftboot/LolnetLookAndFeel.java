@@ -23,6 +23,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
@@ -132,6 +133,16 @@ public class LolnetLookAndFeel {
         } catch (Exception e) {
         }
         return props;
+    }
+
+    public void saveParamChanges(Properties props) {
+        try {
+            File f = new File(dataDir + File.separator + "SkinLookAndFeel.properties");
+            OutputStream out = new FileOutputStream(f);
+            props.store(out, "This is an optional header comment string");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupLookAndFeel(File file) {

@@ -50,7 +50,7 @@ public class LolnetLookAndFeel {
         }
 
         downloadDefaults();
-        setupLookAndFeel(new File(dataDir.getAbsolutePath() + File.separator + "themes" + File.separator + userNodeForPackage.get("LolnetLauncherSkin", "") + ".theme"));
+        setupLookAndFeel(new File(dataDir.getAbsolutePath() + File.separator + "themes" + File.separator + userNodeForPackage.get("LolnetLauncherSkin", "") + ".loltheme"));
     }
 
     public void downloadDefaults() {

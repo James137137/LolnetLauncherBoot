@@ -134,6 +134,15 @@ public class LolnetLauncherboot {
                 newestPackFile = pf;
             }
         }
+        
+        //delete the others
+        if (newestPackFile != null) {
+            for (LauncherJar pf : launcherPackFiles) {
+                if (pf.getFileName() != newestPackFile.getFileName()) {
+                    pf.getFile().delete();
+                }
+            }
+        }
 
         if (newestPackFile == null) {
             log.severe("No valid jar files! Shutting down...");

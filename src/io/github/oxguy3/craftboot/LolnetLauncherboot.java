@@ -39,6 +39,7 @@ public class LolnetLauncherboot {
     @Getter
     private static File dataDir;
 
+    public static final String LAUNCHER_VERSION = "1.0.3-HUNGERDRIVE";
     static final String LAUNCHER_CLASS_NAME = "com.skcraft.launcher.Launcher";
     public static final String ForceUpdateCheck = "LolnetLauncherbootstrapInstalled-1.0.2";
 
@@ -70,6 +71,7 @@ public class LolnetLauncherboot {
         }
         Preferences userNodeForPackage = java.util.prefs.Preferences.userRoot();
         userNodeForPackage.put("LolnetLauncherBootFUC", ForceUpdateCheck);
+        userNodeForPackage.put("LolnetLauncherBootVesion", LAUNCHER_VERSION);
         if (userNodeForPackage.get(ForceUpdateCheck, "") == null || !userNodeForPackage.get(ForceUpdateCheck, "").equals("true")) {
             downloadLatest = true;
         }

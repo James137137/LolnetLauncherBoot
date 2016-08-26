@@ -35,14 +35,14 @@ import lombok.extern.java.Log;
 
 @Log
 public class LolnetLauncherboot {
-
+    
     @Getter
     private static File dataDir;
-
-    public static final String LAUNCHER_VERSION = "1.0.3-HUNGERDRIVE";
+    
+    public static final String LAUNCHER_VERSION = "1.0.4";
     static final String LAUNCHER_CLASS_NAME = "com.skcraft.launcher.Launcher";
-    public static final String ForceUpdateCheck = "LolnetLauncherbootstrapInstalled-1.0.2";
-
+    public static final String ForceUpdateCheck = "LolnetLauncherbootstrapInstalled-1.0.4";
+    
     private static String defaultDirectory() {
         String OS = System.getProperty("os.name").toUpperCase();
         if (OS.contains("WIN")) {
@@ -55,11 +55,11 @@ public class LolnetLauncherboot {
         }
         return System.getProperty("user.dir");
     }
-
+    
     public static void main(String[] args) {
         String property = System.getProperty("java.version");
         if (property.startsWith("1.5") || property.startsWith("1.6") || property.startsWith("1.7")) {
-
+            
             JOptionPane.showMessageDialog(null, "LolnetLauncher requires java 8 or above for all features.", "Please update Java", JOptionPane.WARNING_MESSAGE);
         }
         File launcher = null;
@@ -80,22 +80,22 @@ public class LolnetLauncherboot {
         if (launcher != null) {
             userNodeForPackage.put("LolnetLauncherbootstrapLocation", launcher.getAbsolutePath());
         }
-
+        
         System.out.println(userNodeForPackage.get("LolnetLauncherbootstrap", ""));
         String dataLocation = userNodeForPackage.get("LolnetLauncherDataPath", "");
         String getSnapshotVersion = userNodeForPackage.get("DownloadSnapShot", "");
-
+        
         if (dataLocation == null || dataLocation.length() == 0 || !(new File(dataLocation).exists())) {
             dataLocation = defaultDirectory() + File.separator + "LolnetData/";
         }
-
+        
         dataDir = new File(dataLocation);
         File launcherDir = new File(dataDir, "launcher");
         if (!dataDir.exists() || !launcherDir.exists()) {
             dataDir.mkdirs();
             launcherDir.mkdir();
         }
-
+        
         File[] launcherPacks = launcherDir.listFiles();
         if (launcherPacks == null || launcherPacks.length == 0 || downloadLatest) {
             boolean didDownload = new LauncherDownloader().downloadLauncher(false);
@@ -113,9 +113,28 @@ public class LolnetLauncherboot {
             }
             launcherPacks = launcherDir.listFiles();
         }
-
+        
+        new LolnetLookAndFeel(dataDir);
+        
+        try {
+            runLauncherJar(getLauncherJar());
+        } catch (Exception e) {
+            log.severe("Failed to run launcher jar!");
+            e.printStackTrace();
+        }
+    }
+    
+    public static LauncherJar getLauncherJar() {
+        File launcherDir = new File(dataDir, "launcher");
+        if (!dataDir.exists() || !launcherDir.exists()) {
+            dataDir.mkdirs();
+            launcherDir.mkdir();
+        }
+        
+        File[] launcherPacks = launcherDir.listFiles();
+        
         ArrayList<LauncherJar> launcherPackFiles = new ArrayList<LauncherJar>(launcherPacks.length);
-
+        
         for (int i = 0; i < launcherPacks.length; i++) {
             File f = launcherPacks[i];
             if (f.isFile()) {
@@ -136,7 +155,7 @@ public class LolnetLauncherboot {
                 newestPackFile = pf;
             }
         }
-        
+
         //delete the others
         if (newestPackFile != null) {
             for (LauncherJar pf : launcherPackFiles) {
@@ -145,31 +164,23 @@ public class LolnetLauncherboot {
                 }
             }
         }
-
+        
         if (newestPackFile == null) {
             log.severe("No valid jar files! Shutting down...");
             System.exit(1);
         }
-
+        
         if (newestPackFile.isPacked()) {
             boolean didUnpack = false;
-
+            
             didUnpack = newestPackFile.unpackJar();
-
+            
             if (!didUnpack) {
                 log.severe("Failed to unpack jar file! Shutting down...");
                 System.exit(1);
             }
         }
-        
-        new LolnetLookAndFeel(dataDir);
-
-        try {
-            runLauncherJar(newestPackFile);
-        } catch (Exception e) {
-            log.severe("Failed to run launcher jar!");
-            e.printStackTrace();
-        }
+        return newestPackFile;
     }
 
     /**
@@ -187,7 +198,7 @@ public class LolnetLauncherboot {
     public static void runLauncherJar(LauncherJar jar) throws ClassNotFoundException,
             NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
-
+        
         URL[] jarUrls = new URL[1];
         try {
             jarUrls[0] = jar.getFile().toURI().toURL();
@@ -196,20 +207,19 @@ public class LolnetLauncherboot {
             log.severe("Could not convert File to URL! Shutting down...");
             System.exit(1);
         }
-
+        
         ClassLoader loader = URLClassLoader.newInstance(jarUrls);
         try {
             Class<?> launcherClass = loader.loadClass(LAUNCHER_CLASS_NAME);
             Method launcherMethod = launcherClass.getDeclaredMethod("main", Class.forName("[Ljava.lang.String;"));
-
+            
             String[] args = {};
-
+            
             launcherMethod.invoke(null, new Object[]{args});
         } catch (Exception e) {
             jar.getFile().deleteOnExit();
             String replaceAll = jar.getFile().getAbsolutePath().replaceAll(".jar", ".jar.pack");
             new File(replaceAll).deleteOnExit();
         }
-
     }
 }

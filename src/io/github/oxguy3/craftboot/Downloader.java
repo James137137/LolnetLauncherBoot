@@ -25,7 +25,7 @@ public class Downloader extends JFrame {
         return url;
     }
     
-    static boolean download(String downloadUrl, File launcherJar) {
+    public static boolean download(String downloadUrl, File launcherJar) {
         String site = downloadUrl;
         String filename = launcherJar.getAbsolutePath();
         JFrame frm = new JFrame("Downloading Launcher");
@@ -40,6 +40,7 @@ public class Downloader extends JFrame {
 
         frm.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width / 2 - frm.getSize().width / 2 - 50, Toolkit.getDefaultToolkit().getScreenSize().height / 2 - frm.getSize().height / 2);
         frm.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        System.out.println("downloading from: " + site);
         try {
             URL url = new URL(site);
             url = checkURL(url);

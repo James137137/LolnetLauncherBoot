@@ -1,4 +1,4 @@
-package io.github.oxguy3.craftboot;
+package nz.co.lolnet.james137137;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -38,7 +38,7 @@ public class LolnetLookAndFeel {
     File dataDir;
     String type;
 
-    LolnetLookAndFeel(File dataDir) {
+    public LolnetLookAndFeel(File dataDir) {
 
         this.dataDir = dataDir;
         this.type = type;

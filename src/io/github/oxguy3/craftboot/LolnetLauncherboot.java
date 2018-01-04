@@ -17,6 +17,7 @@
  */
 package io.github.oxguy3.craftboot;
 
+import nz.co.lolnet.james137137.LolnetLookAndFeel;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -39,9 +40,7 @@ public class LolnetLauncherboot {
     @Getter
     private static File dataDir;
     
-    public static final String LAUNCHER_VERSION = "1.0.4";
     static final String LAUNCHER_CLASS_NAME = "com.skcraft.launcher.Launcher";
-    public static final String ForceUpdateCheck = "LolnetLauncherbootstrapInstalled-1.0.4";
     
     private static String defaultDirectory() {
         String OS = System.getProperty("os.name").toUpperCase();
@@ -63,20 +62,14 @@ public class LolnetLauncherboot {
             JOptionPane.showMessageDialog(null, "LolnetLauncher requires java 8 or above for all features.", "Please update Java", JOptionPane.WARNING_MESSAGE);
         }
         File launcher = null;
-        boolean downloadLatest = false;
         try {
             launcher = new File(LolnetLauncherboot.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
         } catch (URISyntaxException ex) {
             Logger.getLogger(LolnetLauncherboot.class.getName()).log(Level.SEVERE, null, ex);
         }
         Preferences userNodeForPackage = java.util.prefs.Preferences.userRoot();
-        userNodeForPackage.put("LolnetLauncherBootFUC", ForceUpdateCheck);
-        userNodeForPackage.put("LolnetLauncherBootVesion", LAUNCHER_VERSION);
-        if (userNodeForPackage.get(ForceUpdateCheck, "") == null || !userNodeForPackage.get(ForceUpdateCheck, "").equals("true")) {
-            downloadLatest = true;
-        }
+        
         userNodeForPackage.put("LolnetLauncherbootstrap", "true");
-        userNodeForPackage.put(ForceUpdateCheck, "true");
         if (launcher != null) {
             userNodeForPackage.put("LolnetLauncherbootstrapLocation", launcher.getAbsolutePath());
         }
@@ -95,24 +88,31 @@ public class LolnetLauncherboot {
             dataDir.mkdirs();
             launcherDir.mkdir();
         }
-        
+        // where all the downloading stuff starts
+        boolean justDownloaded = false;
         File[] launcherPacks = launcherDir.listFiles();
-        if (launcherPacks == null || launcherPacks.length == 0 || downloadLatest) {
+        if (launcherPacks == null || launcherPacks.length == 0) {
+            System.out.println("Downloading launcher as there is none present");
             boolean didDownload = new LauncherDownloader().downloadLauncher(false);
             if (!didDownload) {
                 log.severe("Failed to download launcher! Shutting down...");
                 System.exit(1);
             }
+            justDownloaded = true;
             launcherPacks = launcherDir.listFiles();
         } else if (getSnapshotVersion != null && getSnapshotVersion.equals("true")) {
             userNodeForPackage.put("DownloadSnapShot", "");
+            System.out.println("Downloading Snapshot launcher as requested");
             boolean didDownload = new LauncherDownloader().downloadLauncher(true);
             if (!didDownload) {
                 log.severe("Failed to download launcher! Shutting down...");
                 System.exit(1);
             }
+            justDownloaded = true;
             launcherPacks = launcherDir.listFiles();
         }
+        
+            LauncherDownloader.checkForUpdate(justDownloaded);
         
         new LolnetLookAndFeel(dataDir);
         
@@ -126,6 +126,7 @@ public class LolnetLauncherboot {
     
     public static LauncherJar getLauncherJar() {
         File launcherDir = new File(dataDir, "launcher");
+        System.out.println("launcherDir is " + launcherDir);
         if (!dataDir.exists() || !launcherDir.exists()) {
             dataDir.mkdirs();
             launcherDir.mkdir();

@@ -40,6 +40,8 @@ public class LolnetLauncherboot {
     @Getter
     private static File dataDir;
     
+    public static boolean updateAnyway = false;
+    
     static final String LAUNCHER_CLASS_NAME = "com.skcraft.launcher.Launcher";
     
     private static String defaultDirectory() {

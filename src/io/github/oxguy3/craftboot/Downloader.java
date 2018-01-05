@@ -31,7 +31,7 @@ public class Downloader extends JFrame {
         JFrame frm = new JFrame("Downloading Launcher");
         JProgressBar current = new JProgressBar(0, 100);
         current.setSize(100, 100);
-        current.setValue(43);
+        current.setValue(0);
         current.setStringPainted(true);
         frm.add(current);
         frm.setVisible(true);

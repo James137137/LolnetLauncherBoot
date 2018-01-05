@@ -90,8 +90,8 @@ public class LauncherDownloader {
             ID = Integer.parseInt(IDString);
         }
         int newID = Integer.parseInt(CraftbootUtils.downloadTextFromUrl(FORCEUPDATECHECK));
-        if (ID < newID) {
-            if (!justDownloaded) {
+        if (ID < newID || LolnetLauncherboot.updateAnyway) {
+            if (!justDownloaded || LolnetLauncherboot.updateAnyway) {
                 JOptionPane.showMessageDialog(null, "LolnetLauncher is due for an update", "New launcher Update", JOptionPane.INFORMATION_MESSAGE);
                 downloadLauncher(false);
             }
